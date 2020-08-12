@@ -1,0 +1,94 @@
+<script>
+  document.addEventListener('DOMContentLoaded', function(e) {
+    var seconds = 30;
+    var cancelRedirect = false;
+    show_time();
+    var timeout = setTimeout(function(){go_to_redirect()},(seconds * 1000));
+    var interval = setInterval(function(){show_time()},1000);
+  
+    document.getElementById('digits').focus();
+  
+    function go_to_redirect()
+    {
+      clearTimeout(timeout);
+      clearInterval(interval);
+      if (cancelRedirect) return;
+      document.getElementById("redirect_form").submit();
+    }
+  
+    function show_time()
+    {
+      var timeLeft = document.getElementById('time_left');
+      if (!timeLeft) return;
+      timeLeft.innerHTML = seconds;
+      seconds--;
+    }
+  
+    function speak(text) {
+      var utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.5;
+      utterance.volume = 0.5;
+      window.speechSynthesis.speak(utterance);
+    }
+  
+    <% if @say.any? %>
+      document.getElementById('digits').addEventListener('keydown', function(e) {
+        if (e.keyCode === 32) e.preventDefault();
+      });
+  
+      document.querySelectorAll('.speak').forEach(function(el) {
+        if (el.classList.contains('pause')) {
+          var times = Math.round(Math.ceil(parseFloat(el.textContent) / 0.1));
+          speak(', '.repeat(times));
+        } else {
+          speak(el.textContent);
+        }
+      });
+    <% end %>
+  
+    document.addEventListener('keydown', function(e) {
+      <% if @redirect.any? %>
+        if (e.keyCode == 27) {
+          cancelRedirect = true;
+          return;
+        }
+      <% end %>
+      <% if @say.any? %>
+        if (e.keyCode !== 32) return;
+        if (window.speechSynthesis.speaking) {
+            if (window.speechSynthesis.paused) {
+                window.speechSynthesis.resume();
+            } else {
+                window.speechSynthesis.pause();
+            }
+        }
+      <% end %>
+  
+    });
+  
+  
+    // Get all "navbar-burger" elements
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+  
+    // Check if there are any navbar burgers
+    if ($navbarBurgers.length > 0) {
+  
+      // Add a click event on each of them
+      $navbarBurgers.forEach( el => {
+        el.addEventListener('click', () => {
+  
+          // Get the target from the "data-target" attribute
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+  
+          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+          el.classList.toggle('is-active');
+          $target.classList.toggle('is-active');
+  
+        });
+      });
+    }
+  
+  
+  });
+</script>

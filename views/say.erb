@@ -1,0 +1,15 @@
+<article class="panel">
+  <p class="panel-heading">
+    Speech Transcript
+  </p>
+  <div class="panel-block">
+    <div class="container">
+      <% @say.each_with_index do |say, i| %>
+        <div class="speak <%=h say.node_name.downcase %>"><%=h say.attributes['length'] || say.text %></div>
+      <% end %>
+      <% if @hangup %>
+        <div><strong>Hangup</strong></div>
+      <% end %>
+    </div>
+  </div>
+</article>

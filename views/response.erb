@@ -1,0 +1,12 @@
+<article class="panel">
+  <p class="panel-heading">
+    Response
+  </p>
+  <div class="panel-block">
+    <% if @resp.status == 200 %>
+      <pre><%= rouge @resp&.body %></pre>
+    <% else %>
+      <%= @resp&.body %>
+    <% end %>
+  </div>
+</article>

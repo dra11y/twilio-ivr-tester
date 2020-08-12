@@ -1,0 +1,13 @@
+<article class="panel">
+  <p class="panel-heading">
+    Redirect
+  </p>
+  <div class="panel-block">
+    <p>There is a redirect within this request.  I will navigate there in about <b><span id="time_left"></span></b> seconds.<br/>
+      <b>New location: </b>
+      <%= @redirect %></p>
+    <form id="redirect_form" action="/" method="post">
+      <input type="hidden" name="url" value="<%= @redirect %>">
+    </form>
+  </div>
+</article>

@@ -1,0 +1,28 @@
+<article class="panel">
+  <p class="panel-heading">
+    Gather
+  </p>
+  <div class="panel-block">
+    <span class="help-block"><b>Action Endpoint: </b> <%= @action %></span>
+  </div>
+  <div class="panel-block">
+    <form class="form" method="post" action="/">
+      <input type="hidden" name="url" value="<%= @action %>" />
+      <div class="field is-horizontal is-grouped">
+        <div class="field-label is-normal">
+          <label for="digits" class="label">Digits</label>
+        </div>
+        <div class="field-body">
+          <div class="field has-addons">
+            <p class="control">
+              <input type="text" class="input" name="digits" id="digits" placeholder="Enter response here..." maxlength="10"/>
+            </p>
+            <p class="control">
+              <button type="submit" class="button is-success">Submit</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</article>
