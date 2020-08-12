@@ -42,3 +42,7 @@ The app will launch in your browser at http://localhost:9292. See the [Sinatra](
 ## Troubleshooting
 
 This app is not meant to work by itself. It attempts to connect immediately to your backend app, just as a Twilio incoming call would. If you see an error such as `Errno::ECONNREFUSED at /`, please customize the `IVR_BASE_URL` and `IVR_DEFAULT_PATH` environment variables and make sure your backend app is running and responding to requests.
+
+## Styles
+
+The styles are based on [Bulma](https://bulma.io) v0.9.0.
