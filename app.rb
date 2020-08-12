@@ -43,6 +43,7 @@ get_or_post '/' do
     @base_url = session[:base_url] || IVR_BASE_URL
     @url = params[:url] || IVR_DEFAULT_PATH
     @url = @base_url + @url.to_s if @url[0] == '/' || @url.nil?
+    @silent = !ENV['SILENT'].nil?
 
     if params[:new]
         session.clear

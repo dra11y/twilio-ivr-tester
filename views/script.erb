@@ -25,10 +25,12 @@
     }
   
     function speak(text) {
+      <% unless @silent %>
       var utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 1.5;
       utterance.volume = 0.5;
       window.speechSynthesis.speak(utterance);
+      <% end %>
     }
   
     <% if @say.any? %>

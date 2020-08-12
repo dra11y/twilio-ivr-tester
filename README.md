@@ -4,6 +4,8 @@ This small Ruby/Sinatra application is meant for developer use in testing a [Twi
 
 Please feel free to submit a PR if you have a bugfix or improvement.
 
+Oh yeah, it talks to you via the [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API) too!
+
 ## Requirements
 
 - Ruby v2.6+
@@ -37,6 +39,12 @@ gem install bundler
 ```
 bundle install
 bundle exec rackup
+```
+
+To disable speech output:
+
+```
+SILENT=true bundle exec rackup
 ```
 
 The app will launch in your browser at http://localhost:9292. See the [Sinatra](https://github.com/sinatra/sinatra) documentation for more info.
