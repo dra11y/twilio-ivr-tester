@@ -28,6 +28,8 @@ gem install bundler
 
 1. Customize the `IVR_BASE_URL` and `IVR_DEFAULT_PATH` environment variables in your environment or in app.rb according to your setup.
 
+- If your app takes an `api_key` parameter to protect it from external requests, you can set it in the `API_KEY` environment variable, and it will be passed to your app as a parameter.
+
 2. Launch your Twilio IVR API app in another Terminal window.
 
 3. Launch this app:
