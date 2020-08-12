@@ -1,6 +1,6 @@
 # twilio-ivr-tester
 
-This small Ruby/Sinatra application is meant for developer use in testing a [Twilio](https://twilio.com) IVR API endpoint ("incoming call") from the browser without having to incur charges that would be incurred by dialing its Twilio Number. Besides, it's faster, and you don't have to change your endpoint settings in the Twilio console!
+This small Ruby/Sinatra application is meant for developer use in testing a [Twilio](https://twilio.com) IVR API endpoint ("incoming call") from the browser without having to incur charges that would be incurred by dialing its Twilio Number. Besides, it's faster, and you don't have to change your endpoint settings in the Twilio console just to test your development version!
 
 Please feel free to submit a PR if you have a bugfix or improvement.
 
