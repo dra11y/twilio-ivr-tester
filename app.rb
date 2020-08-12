@@ -36,12 +36,12 @@ def self.get_or_post(url, &block)
     post(url, &block)
 end
 
-DEFAULT_PATH = '/voice'
+IVR_DEFAULT_PATH = ENV['IVR_DEFAULT_PATH'] || '/voice'
 IVR_BASE_URL = ENV['IVR_BASE_URL'] || 'http://localhost:3000'
 
 get_or_post '/' do
     @base_url = session[:base_url] || IVR_BASE_URL
-    @url = params[:url] || DEFAULT_PATH
+    @url = params[:url] || IVR_DEFAULT_PATH
     @url = @base_url + @url.to_s if @url[0] == '/' || @url.nil?
 
     if params[:new]
