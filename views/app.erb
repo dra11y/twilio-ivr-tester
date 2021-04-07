@@ -10,10 +10,19 @@
     <link href="styles.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css" rel="stylesheet" />
   </head>
-  <body>
+  <body onunload="speechSynthesis.cancel()">
     <%= erb :navbar %>
+
+    <div class="panel">
+      <div class="is-size-6 panel-heading has-text-centered">
+        <%= @url %>
+      </div>
+      <div id="userInteractionNotice" class="is-hidden is-size-6 panel-heading has-text-centered">
+        Please click to begin speaking.
+      </div>
+    </div>
+
     <div class="container">
-      <h4><%= @url %></h4>
       <%= erb :gather if @gather.any? %>
       <%= erb :redirect if @redirect.any? %>
       <%= erb :response %>

@@ -1,21 +1,36 @@
 <script>
-  document.addEventListener('DOMContentLoaded', function(e) {
-    var seconds = 30;
+  document.addEventListener('keydown', (e) => {
+    if (e.keyCode != 27) return;
+
+    speechSynthesis.cancel();
+  });
+
+  let speechLoop = function(e) {
+    if (speechSynthesis.speaking) {
+      speechSynthesis.cancel();
+    }
+    var seconds = 3;
     var cancelRedirect = false;
     show_time();
     var timeout = setTimeout(function(){go_to_redirect()},(seconds * 1000));
     var interval = setInterval(function(){show_time()},1000);
-  
-    document.getElementById('digits').focus();
-  
+
+    let digitsInput = document.getElementById('digits');
+    if (!!digitsInput) digitsInput.focus();
+
+    let userInteractionNotice = document.getElementById('userInteractionNotice');
+
+    userInteractionNotice.classList.add('is-hidden');
+
     function go_to_redirect()
     {
       clearTimeout(timeout);
       clearInterval(interval);
-      if (cancelRedirect) return;
-      document.getElementById("redirect_form").submit();
+      let redirectForm = document.getElementById("redirect_form");
+      if (!redirectForm || cancelRedirect) return;
+      redirectForm.submit();
     }
-  
+
     function show_time()
     {
       var timeLeft = document.getElementById('time_left');
@@ -23,31 +38,37 @@
       timeLeft.innerHTML = seconds;
       seconds--;
     }
-  
+
     function speak(text) {
       <% unless @silent %>
       var utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 1.5;
       utterance.volume = 0.5;
-      window.speechSynthesis.speak(utterance);
+      speechSynthesis.speak(utterance);
+      setTimeout(() => {
+        if (!speechSynthesis.speaking) {
+          userInteractionNotice.classList.remove('is-hidden');
+          document.addEventListener('click', speechLoop, { once: true });
+        }
+      }, 100);
       <% end %>
     }
-  
+
     <% if @say.any? %>
-      document.getElementById('digits').addEventListener('keydown', function(e) {
+      if (!!digitsInput) digitsInput.addEventListener('keydown', function(e) {
         if (e.keyCode === 32) e.preventDefault();
       });
-  
+
       document.querySelectorAll('.speak').forEach(function(el) {
         if (el.classList.contains('pause')) {
-          var times = Math.round(Math.ceil(parseFloat(el.textContent) / 0.1));
-          speak(', '.repeat(times));
+          var times = Math.round(Math.ceil(parseFloat(el.textContent)));
+          speak(', , , , , '.repeat(times));
         } else {
           speak(el.textContent);
         }
       });
     <% end %>
-  
+
     document.addEventListener('keydown', function(e) {
       <% if @redirect.any? %>
         if (e.keyCode == 27) {
@@ -57,40 +78,42 @@
       <% end %>
       <% if @say.any? %>
         if (e.keyCode !== 32) return;
-        if (window.speechSynthesis.speaking) {
-            if (window.speechSynthesis.paused) {
-                window.speechSynthesis.resume();
+        if (speechSynthesis.speaking) {
+            if (speechSynthesis.paused) {
+                speechSynthesis.resume();
             } else {
-                window.speechSynthesis.pause();
+                speechSynthesis.pause();
             }
         }
       <% end %>
-  
+
     });
-  
-  
+
+
     // Get all "navbar-burger" elements
     const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-  
+
     // Check if there are any navbar burgers
     if ($navbarBurgers.length > 0) {
-  
+
       // Add a click event on each of them
       $navbarBurgers.forEach( el => {
         el.addEventListener('click', () => {
-  
+
           // Get the target from the "data-target" attribute
           const target = el.dataset.target;
           const $target = document.getElementById(target);
-  
+
           // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
           el.classList.toggle('is-active');
           $target.classList.toggle('is-active');
-  
+
         });
       });
     }
-  
-  
-  });
+
+
+  }
+
+  document.addEventListener('DOMContentLoaded', speechLoop);
 </script>

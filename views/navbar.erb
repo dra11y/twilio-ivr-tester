@@ -13,6 +13,7 @@
     <div class="navbar-end">
       <div class="navbar-item is-expanded">
         <form class="form" method="post" action="/">
+          <input type="hidden" name="new" value="true" />
           <div class="field">
             <div class="control">
               <input id="url-input" style="width: 500px;" class="input is-rounded is-fullwidth" type="text" placeholder="Enter a URL" name="url" value="<%= @new_url %>" />
