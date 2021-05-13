@@ -1,13 +1,16 @@
 <script>
+  let synth = window.speechSynthesis;
+  var voice = null;
+
   document.addEventListener('keydown', (e) => {
     if (e.keyCode != 27) return;
 
-    speechSynthesis.cancel();
+    synth.cancel();
   });
 
   let speechLoop = function(e) {
-    if (speechSynthesis.speaking) {
-      speechSynthesis.cancel();
+    if (synth.speaking) {
+      synth.cancel();
     }
     var seconds = 3;
     var cancelRedirect = false;
@@ -44,9 +47,12 @@
       var utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 1.5;
       utterance.volume = 0.5;
-      speechSynthesis.speak(utterance);
+      console.log('setting voice:');
+      console.log(voice);
+      utterance.voice = voice;
+      synth.speak(utterance);
       setTimeout(() => {
-        if (!speechSynthesis.speaking) {
+        if (!synth.speaking) {
           userInteractionNotice.classList.remove('is-hidden');
           document.addEventListener('click', speechLoop, { once: true });
         }
@@ -55,18 +61,35 @@
     }
 
     <% if @say.any? %>
+
+
+      let voiceSetInterval = setInterval(function() {
+        console.log('trying to set voice...');
+        voice = synth.getVoices().find((v) => v.name == 'Alex');
+        if (typeof voice !== 'undefined') {
+          clearInterval(voiceSetInterval);
+          console.log('success!');
+          console.log(voice);
+
+          document.querySelectorAll('.speak').forEach(function(el) {
+            if (el.classList.contains('pause')) {
+              var times = Math.round(Math.ceil(parseFloat(el.textContent)));
+              speak(', , , , , '.repeat(times));
+            } else {
+              speak(el.textContent);
+            }
+          });
+
+        } else {
+          console.log('fail!');
+        }
+      }, 100);
+
       if (!!digitsInput) digitsInput.addEventListener('keydown', function(e) {
         if (e.keyCode === 32) e.preventDefault();
       });
 
-      document.querySelectorAll('.speak').forEach(function(el) {
-        if (el.classList.contains('pause')) {
-          var times = Math.round(Math.ceil(parseFloat(el.textContent)));
-          speak(', , , , , '.repeat(times));
-        } else {
-          speak(el.textContent);
-        }
-      });
+
     <% end %>
 
     document.addEventListener('keydown', function(e) {
@@ -78,11 +101,11 @@
       <% end %>
       <% if @say.any? %>
         if (e.keyCode !== 32) return;
-        if (speechSynthesis.speaking) {
-            if (speechSynthesis.paused) {
-                speechSynthesis.resume();
+        if (synth.speaking) {
+            if (synth.paused) {
+                synth.resume();
             } else {
-                speechSynthesis.pause();
+                synth.pause();
             }
         }
       <% end %>

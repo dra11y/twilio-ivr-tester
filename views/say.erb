@@ -5,7 +5,7 @@
   <div class="panel-block">
     <div class="container">
       <% @say.each_with_index do |say, i| %>
-        <div class="speak <%=h say.node_name.downcase %>"><%=h say.attributes['length'] || say.text %></div>
+        <div class="speak <%= say.node_name.downcase %>"><%= say.attributes['length'] || say.text %></div>
       <% end %>
       <% if @hangup %>
         <div><strong>Hangup</strong></div>
